@@ -52,6 +52,7 @@ class ProductService(private val productRepository: ProductRepository) {
     }
 
     fun deleteProduct(id: Long) {
+        productRepository.findProductById(id)?: throw ProductNotFoundException()
         productRepository.deleteById(id)
     }
 }
