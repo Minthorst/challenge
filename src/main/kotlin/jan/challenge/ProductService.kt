@@ -1,33 +1,42 @@
 package jan.challenge
 
-import jan.challenge.boudary.CreateProductRequest
+import jan.challenge.boudary.ProductRequest
 import jan.challenge.boudary.GetProductResponse
 import jan.challenge.boudary.UpdateProductRequest
 import jan.challenge.boudary.toProduct
-import org.springframework.http.HttpStatus
+import jan.challenge.exceptions.ProductNotFoundException
+import jan.challenge.exceptions.ProductNotValidException
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
+import java.math.BigDecimal
 
 @Service
 class ProductService(private val productRepository: ProductRepository) {
 
-    fun saveProduct(productRequest: CreateProductRequest): GetProductResponse {
+    fun saveProduct(productRequest: ProductRequest): GetProductResponse {
+        validateProductRequest(productRequest)
         val savedProduct = productRepository.save(productRequest.toProduct())
         return savedProduct.toGetProductResponse()
     }
 
+    private fun validateProductRequest(request: ProductRequest) {
+        if(request.priceInEur < BigDecimal.ZERO) throw ProductNotValidException("product price must not be negative")
+        if (request.stock < 0) throw ProductNotValidException("product stock must be positive")
+    }
+
     fun findAllProducts(): List<GetProductResponse> {
-        val foundProducts = productRepository.findAll().toList()
+        val foundProducts = productRepository.findAll()
         return foundProducts.map { it.toGetProductResponse() }
     }
 
     fun findProductById(id: Long): GetProductResponse {
-        val foundProduct = productRepository.findProductById(id)?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        val foundProduct = productRepository.findProductById(id)?: throw ProductNotFoundException()
         return foundProduct.toGetProductResponse()
     }
 
     fun updateProduct(id: Long, updateProductRequest: UpdateProductRequest): GetProductResponse {
-        val foundProduct = productRepository.findProductById(id)?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        validateUpdateProductRequest(updateProductRequest)
+        val foundProduct = productRepository.findProductById(id)?: throw ProductNotFoundException()
+
         val updatedProduct = foundProduct.copy(
             name = updateProductRequest.name ?: foundProduct.name,
             description = updateProductRequest.description ?: foundProduct.description,
@@ -35,6 +44,11 @@ class ProductService(private val productRepository: ProductRepository) {
             stock = updateProductRequest.stock ?: foundProduct.stock
         )
         return productRepository.save(updatedProduct).toGetProductResponse()
+    }
+
+    private fun validateUpdateProductRequest(request: UpdateProductRequest) {
+        request.priceInEur?.let { if(it < BigDecimal.ZERO) throw ProductNotValidException("product price must not be negative") }
+        request.stock?.let { if (it < 0) throw ProductNotValidException("product stock must be positive") }
     }
 
     fun deleteProduct(id: Long) {

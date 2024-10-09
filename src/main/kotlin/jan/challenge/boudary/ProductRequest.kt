@@ -3,14 +3,14 @@ package jan.challenge.boudary
 import jan.challenge.Product
 import java.math.BigDecimal
 
-data class CreateProductRequest(
+data class ProductRequest(
     val name: String,
     val description: String,
     val priceInEur: BigDecimal,
     val stock: Long
 )
 
-fun CreateProductRequest.toProduct(): Product {
+fun ProductRequest.toProduct(): Product {
     return Product(
         id = null,
         name = name,
