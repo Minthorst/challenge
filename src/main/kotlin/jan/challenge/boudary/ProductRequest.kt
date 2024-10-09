@@ -1,6 +1,6 @@
 package jan.challenge.boudary
 
-import jan.challenge.Product
+import jan.challenge.model.Product
 import java.math.BigDecimal
 
 data class ProductRequest(

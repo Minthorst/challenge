@@ -5,6 +5,9 @@ import jan.challenge.boudary.ProductRequest
 import jan.challenge.boudary.UpdateProductRequest
 import jan.challenge.exceptions.ProductNotFoundException
 import jan.challenge.exceptions.ProductNotValidException
+import jan.challenge.model.Product
+import jan.challenge.repository.ProductRepository
+import jan.challenge.service.ProductService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
@@ -177,14 +180,16 @@ class ProductServiceTest {
     @Test
     fun `updateProduct should handle invalid product price`() {
         val invalidUpdateProductRequest = createUpdateProductRequest(price = -BigDecimal.valueOf(100))
-        val exception = assertThrows<ProductNotValidException> { productService.updateProduct(1L, invalidUpdateProductRequest) }
+        val exception =
+            assertThrows<ProductNotValidException> { productService.updateProduct(1L, invalidUpdateProductRequest) }
         assertEquals("product price must not be negative", exception.message)
     }
 
     @Test
     fun `updateProduct should handle invalid product stock`() {
         val invalidUpdateProductRequest = createUpdateProductRequest(stock = -5L)
-        val exception = assertThrows<ProductNotValidException> { productService.updateProduct(1L, invalidUpdateProductRequest) }
+        val exception =
+            assertThrows<ProductNotValidException> { productService.updateProduct(1L, invalidUpdateProductRequest) }
         assertEquals("product stock must be positive", exception.message)
     }
 

@@ -1,10 +1,10 @@
 package jan.challenge.boundary
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import jan.challenge.ProductService
 import jan.challenge.boudary.GetProductResponse
 import jan.challenge.boudary.ProductController
 import jan.challenge.boudary.ProductRequest
+import jan.challenge.service.ProductService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
@@ -89,4 +89,6 @@ class ProductControllerTest {
 
         verify(productService).findProductById(productId)
     }
+
+    //TODO ad more tests
 }

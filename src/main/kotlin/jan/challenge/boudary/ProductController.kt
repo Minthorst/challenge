@@ -1,6 +1,6 @@
 package jan.challenge.boudary
 
-import jan.challenge.ProductService
+import jan.challenge.service.ProductService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -35,8 +35,10 @@ class ProductController(private val productService: ProductService) {
     @PostMapping("")
     fun saveProduct(@RequestBody productRequest: ProductRequest): ResponseEntity<GetProductResponse> {
         logger.info("saveProduct $productRequest")
-        return ResponseEntity.ok(productService.saveProduct(productRequest)
-)    }
+        return ResponseEntity.ok(
+            productService.saveProduct(productRequest)
+        )
+    }
 
     @PutMapping("/{id}")
     fun updateProductById(

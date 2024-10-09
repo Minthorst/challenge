@@ -1,3 +1,3 @@
 package jan.challenge.exceptions
 
-class ProductNotFoundException() : Exception()
+class ProductNotFoundException(val productId: Long) : Exception()

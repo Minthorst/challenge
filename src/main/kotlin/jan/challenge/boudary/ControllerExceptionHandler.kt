@@ -17,7 +17,7 @@ class ControllerExceptionHandler {
 
     @ExceptionHandler
     fun handleProductNotFound(ex: ProductNotFoundException): ResponseEntity<String> {
-        return ResponseEntity("product was not found", HttpStatus.BAD_REQUEST)
+        return ResponseEntity("product with id ${ex.productId} was not found", HttpStatus.BAD_REQUEST)
     }
 
 }

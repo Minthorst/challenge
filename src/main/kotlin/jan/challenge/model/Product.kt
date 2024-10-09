@@ -1,4 +1,4 @@
-package jan.challenge
+package jan.challenge.model
 
 import jakarta.persistence.*
 import jan.challenge.boudary.GetProductResponse

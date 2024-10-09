@@ -1,11 +1,13 @@
-package jan.challenge
+package jan.challenge.service
 
-import jan.challenge.boudary.ProductRequest
 import jan.challenge.boudary.GetProductResponse
+import jan.challenge.boudary.ProductRequest
 import jan.challenge.boudary.UpdateProductRequest
 import jan.challenge.boudary.toProduct
 import jan.challenge.exceptions.ProductNotFoundException
 import jan.challenge.exceptions.ProductNotValidException
+import jan.challenge.model.toGetProductResponse
+import jan.challenge.repository.ProductRepository
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -19,7 +21,7 @@ class ProductService(private val productRepository: ProductRepository) {
     }
 
     private fun validateProductRequest(request: ProductRequest) {
-        if(request.priceInEur < BigDecimal.ZERO) throw ProductNotValidException("product price must not be negative")
+        if (request.priceInEur < BigDecimal.ZERO) throw ProductNotValidException("product price must not be negative")
         if (request.stock < 0) throw ProductNotValidException("product stock must be positive")
     }
 
@@ -29,13 +31,13 @@ class ProductService(private val productRepository: ProductRepository) {
     }
 
     fun findProductById(id: Long): GetProductResponse {
-        val foundProduct = productRepository.findProductById(id)?: throw ProductNotFoundException()
+        val foundProduct = productRepository.findProductById(id) ?: throw ProductNotFoundException(id)
         return foundProduct.toGetProductResponse()
     }
 
     fun updateProduct(id: Long, updateProductRequest: UpdateProductRequest): GetProductResponse {
         validateUpdateProductRequest(updateProductRequest)
-        val foundProduct = productRepository.findProductById(id)?: throw ProductNotFoundException()
+        val foundProduct = productRepository.findProductById(id) ?: throw ProductNotFoundException(id)
 
         val updatedProduct = foundProduct.copy(
             name = updateProductRequest.name ?: foundProduct.name,
@@ -47,12 +49,12 @@ class ProductService(private val productRepository: ProductRepository) {
     }
 
     private fun validateUpdateProductRequest(request: UpdateProductRequest) {
-        request.priceInEur?.let { if(it < BigDecimal.ZERO) throw ProductNotValidException("product price must not be negative") }
+        request.priceInEur?.let { if (it < BigDecimal.ZERO) throw ProductNotValidException("product price must not be negative") }
         request.stock?.let { if (it < 0) throw ProductNotValidException("product stock must be positive") }
     }
 
     fun deleteProduct(id: Long) {
-        productRepository.findProductById(id)?: throw ProductNotFoundException()
+        productRepository.findProductById(id) ?: throw ProductNotFoundException(id)
         productRepository.deleteById(id)
     }
 }
