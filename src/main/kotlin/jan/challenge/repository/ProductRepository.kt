@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 interface ProductRepository : CrudRepository<Product, Long> {
 
     fun findProductById(id: Long): Product?
+
+    fun findProductByName(name: String): Product?
 }
