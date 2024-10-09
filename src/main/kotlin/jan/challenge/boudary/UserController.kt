@@ -2,10 +2,9 @@ package jan.challenge.boudary
 
 import jan.challenge.boudary.dtos.UserRequest
 import jan.challenge.boudary.dtos.UserResponse
-import jan.challenge.boudary.dtos.toUser
-import jan.challenge.model.toUserResponse
 import jan.challenge.service.UserService
-import org.springframework.http.HttpStatus
+import org.slf4j.LoggerFactory
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,31 +12,36 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/user")
 class UserController(private val userService: UserService) {
 
+    companion object {
+        private val logger = LoggerFactory.getLogger(ProductController::class.java)
+    }
+
     @PostMapping
-    fun create(@RequestBody userRequest: UserRequest): UserResponse =
-        userService.createUser(userRequest.toUser())
-            ?.toUserResponse()
-            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot create user.")
+    fun createUser(@RequestBody userRequest: UserRequest): ResponseEntity<UserResponse> {
+        logger.info("createUser ${userRequest.username}")
+        return ResponseEntity.ok(userService.createUser(userRequest))
+    }
 
     @GetMapping
-    fun listAll(): List<UserResponse> =
-        userService.findAll()
-            .map { it.toUserResponse() }
+    fun getAllUsers(): ResponseEntity<List<UserResponse>> {
+        logger.info("getAllUsers")
+        return ResponseEntity.ok(userService.findAll())
+    }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): UserResponse =
-        userService.findById(id)
-            ?.toUserResponse()
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.")
+    fun findUserById(@PathVariable id: Long): ResponseEntity<UserResponse> {
+        logger.info("findUserById $id")
+        return ResponseEntity.ok(userService.findById(id))
+    }
 
     @DeleteMapping("/{id}")
-    fun deleteById(@PathVariable id: Long) {
+    fun deleteUserById(@PathVariable id: Long) {
+        logger.info("deleteUserById $id")
         userService.deleteById(id)
     }
 }

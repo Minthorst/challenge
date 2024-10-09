@@ -20,16 +20,28 @@ class ControllerExceptionHandler {
     }
 
     @ExceptionHandler
-    fun handleProductNotFound(ex: ProductNotFoundException): ResponseEntity<String> {
+    fun handleUserNotValidException(ex: UserNotValidException): ResponseEntity<String> {
         logError(ex.message)
         return ResponseEntity(ex.message, HttpStatus.BAD_REQUEST)
     }
 
-    /*@ExceptionHandler
+    @ExceptionHandler
+    fun handleProductNotFound(ex: ProductNotFoundException): ResponseEntity<String> {
+        logError(ex.message)
+        return ResponseEntity(ex.message, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler
+    fun handleUserNotFound(ex: UserNotFoundException): ResponseEntity<String> {
+        logError(ex.message)
+        return ResponseEntity(ex.message, HttpStatus.NOT_FOUND)
+    }
+
+    @ExceptionHandler
     fun handleException(ex: Exception): ResponseEntity<String> {
         logger.error("Exception occurred: ${ex.message}", ex)
         return ResponseEntity("An error occurred: ${ex.message}", HttpStatus.INTERNAL_SERVER_ERROR)
-    }*/
+    }
 
     private fun logError(exceptionMessage: String?) {
         logger.error("Exception occurred: $exceptionMessage")
