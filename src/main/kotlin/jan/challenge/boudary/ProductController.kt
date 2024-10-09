@@ -1,5 +1,8 @@
 package jan.challenge.boudary
 
+import jan.challenge.boudary.dtos.GetProductResponse
+import jan.challenge.boudary.dtos.ProductRequest
+import jan.challenge.boudary.dtos.UpdateProductRequest
 import jan.challenge.service.ProductService
 import org.slf4j.LoggerFactory
 import org.springframework.http.ResponseEntity

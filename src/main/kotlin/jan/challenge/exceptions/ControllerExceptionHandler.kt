@@ -1,7 +1,6 @@
-package jan.challenge.boudary
+package jan.challenge.exceptions
 
-import jan.challenge.exceptions.ProductNotFoundException
-import jan.challenge.exceptions.ProductNotValidException
+import jan.challenge.boudary.ProductController
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,11 +25,11 @@ class ControllerExceptionHandler {
         return ResponseEntity(ex.message, HttpStatus.BAD_REQUEST)
     }
 
-    @ExceptionHandler
+    /*@ExceptionHandler
     fun handleException(ex: Exception): ResponseEntity<String> {
         logger.error("Exception occurred: ${ex.message}", ex)
         return ResponseEntity("An error occurred: ${ex.message}", HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    }*/
 
     private fun logError(exceptionMessage: String?) {
         logger.error("Exception occurred: $exceptionMessage")

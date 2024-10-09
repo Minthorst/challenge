@@ -1,9 +1,9 @@
 package jan.challenge.boundary
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import jan.challenge.boudary.GetProductResponse
 import jan.challenge.boudary.ProductController
-import jan.challenge.boudary.ProductRequest
+import jan.challenge.boudary.dtos.GetProductResponse
+import jan.challenge.boudary.dtos.ProductRequest
 import jan.challenge.service.ProductService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

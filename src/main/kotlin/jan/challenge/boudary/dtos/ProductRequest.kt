@@ -1,4 +1,4 @@
-package jan.challenge.boudary
+package jan.challenge.boudary.dtos
 
 import jan.challenge.model.Product
 import java.math.BigDecimal

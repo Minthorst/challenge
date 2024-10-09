@@ -1,8 +1,8 @@
 package jan.challenge
 
-import jan.challenge.boudary.GetProductResponse
-import jan.challenge.boudary.ProductRequest
-import jan.challenge.boudary.UpdateProductRequest
+import jan.challenge.boudary.dtos.GetProductResponse
+import jan.challenge.boudary.dtos.ProductRequest
+import jan.challenge.boudary.dtos.UpdateProductRequest
 import jan.challenge.exceptions.ProductNotFoundException
 import jan.challenge.exceptions.ProductNotValidException
 import jan.challenge.model.Product
