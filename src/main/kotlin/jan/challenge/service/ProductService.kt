@@ -22,7 +22,7 @@ class ProductService(private val productRepository: ProductRepository) {
 
     private fun validateProductRequest(request: ProductRequest) {
         val foundProduct = productRepository.findProductByName(request.name)
-        if (foundProduct != null) throw ProductNotValidException("product with name ${foundProduct.name} already exists")
+        if (foundProduct != null) throw ProductNotValidException("product with name <${foundProduct.name}> already exists")
         if (request.priceInEur < BigDecimal.ZERO) throw ProductNotValidException("product price must not be negative")
         if (request.stock < 0) throw ProductNotValidException("product stock must be positive")
     }
